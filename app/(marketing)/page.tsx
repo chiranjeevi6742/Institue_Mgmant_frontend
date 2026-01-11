@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, LayoutDashboard, Users, BarChart3 } from "lucide-react";
+import Testimonials from "@/components/sections/Testimonials";
 
 export default function LandingPage() {
     return (
@@ -61,6 +62,9 @@ export default function LandingPage() {
                     </div>
                 </div>
             </section>
+
+            {/* Testimonials */}
+            <Testimonials />
 
             {/* How It Works */}
             <section className="py-24 bg-slate-50 dark:bg-slate-900">
