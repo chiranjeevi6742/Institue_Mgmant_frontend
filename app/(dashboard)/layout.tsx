@@ -2,6 +2,8 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { PageTransition } from "@/components/ui/page-transition";
+
 
 export default async function DashboardLayout({
     children,
@@ -29,7 +31,9 @@ export default async function DashboardLayout({
                 <Header />
                 <main className="flex-1 overflow-y-auto p-6 md:p-10">
                     <div className="mx-auto max-w-6xl space-y-8">
-                        {children}
+                        <PageTransition>
+                            {children}
+                        </PageTransition>
                     </div>
                 </main>
             </div>

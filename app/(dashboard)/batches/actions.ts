@@ -35,6 +35,26 @@ export async function createBatch(formData: FormData) {
     return { success: true };
 }
 
+export async function updateBatch(batchId: string, formData: FormData) {
+    const supabase = await createClient();
+
+    const name = formData.get("name") as string;
+    const year = formData.get("year") as string;
+
+    const { error } = await supabase
+        .from("batches")
+        .update({
+            name,
+            academic_year: year
+        })
+        .eq("id", batchId); // RLS will automatically ensure it belongs to the school
+
+    if (error) return { error: error.message };
+
+    revalidatePath("/batches");
+    return { success: true };
+}
+
 export async function deleteBatch(batchId: string) {
     const supabase = await createClient();
     const { error } = await supabase.from("batches").delete().eq("id", batchId);

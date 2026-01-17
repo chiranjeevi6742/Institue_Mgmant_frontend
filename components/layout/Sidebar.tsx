@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Users, BookOpen, CalendarCheck, BarChart3, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, BookOpen, CalendarCheck, BarChart3, Settings, LogOut, FileText } from "lucide-react";
 
 const sidebarLinks = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/batches", label: "Batches", icon: BookOpen },
     { href: "/students", label: "Students", icon: Users },
     { href: "/attendance", label: "Attendance", icon: CalendarCheck },
+    { href: "/assignments", label: "Assignments", icon: FileText },
     { href: "/reports", label: "Reports", icon: BarChart3 },
     { href: "/settings", label: "Settings", icon: Settings },
 ];

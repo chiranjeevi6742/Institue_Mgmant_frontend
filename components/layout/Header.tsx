@@ -2,10 +2,40 @@
 
 import { usePathname } from "next/navigation";
 import { useUser } from "@/components/providers/UserProvider";
+import { createClient } from "@/lib/supabase/client";
+import { useEffect, useState } from "react";
+import { Sparkles } from "lucide-react";
 
 export function Header() {
     const pathname = usePathname();
     const { user } = useUser();
+    const [isPro, setIsPro] = useState(false);
+    const supabase = createClient();
+
+    useEffect(() => {
+        async function checkProStatus() {
+            if (!user) return;
+
+            // Use RPC for robust checking
+            const { data, error } = await supabase.rpc('get_my_subscription');
+
+            if (error) {
+                console.error("RPC Error:", error);
+                return;
+            }
+
+            // data is JSON: { plan: 'pro', status: '...' }
+            // need to cast or just check property
+            const plan = (data as any)?.plan;
+
+            if (plan === "pro") {
+                setIsPro(true);
+            } else {
+                setIsPro(false); // Ensure it's set to false if not pro
+            }
+        }
+        checkProStatus();
+    }, [user]);
 
     // Simple breadcrumb logic
     const pageName = pathname.split("/").filter(Boolean).pop();
@@ -19,6 +49,11 @@ export function Header() {
                 {title === "Dashboard" ? "Overview" : title}
             </h1>
             <div className="ml-auto flex items-center gap-4">
+                {isPro && (
+                    <span className="inline-flex items-center rounded-full border border-purple-200 bg-purple-600 px-3 py-1 text-xs font-semibold text-white shadow-sm hover:bg-purple-700 gap-1">
+                        <Sparkles className="h-3 w-3 fill-white" /> PRO
+                    </span>
+                )}
                 <div className="flex flex-col items-end mr-2 hidden md:flex">
                     <span className="text-sm font-medium">{user?.email}</span>
                     <span className="text-xs text-muted-foreground uppercase">{user?.role || "Admin"}</span>

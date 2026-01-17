@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { CreateBatchDialog } from "./create-dialog";
+import { EditBatchDialog } from "./edit-dialog";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { format } from "date-fns";
@@ -65,8 +67,7 @@ export default async function BatchesPage() {
                                         <TableCell>{batch.academic_year || "-"}</TableCell>
                                         <TableCell>{format(new Date(batch.created_at), "PPP")}</TableCell>
                                         <TableCell className="text-right">
-                                            {/* Actions like Edit/Delete will go here in Phase 3.1 */}
-                                            <span className="text-muted-foreground text-xs">View</span>
+                                            <EditBatchDialog batch={batch} />
                                         </TableCell>
                                     </TableRow>
                                 ))}

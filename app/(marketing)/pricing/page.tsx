@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import { ProUpgradeButton } from "@/app/(dashboard)/settings/billing/pro-upgrade-button";
 
-export default function PricingPage() {
+export default async function PricingPage() {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
     return (
         <div className="py-20 bg-slate-50 dark:bg-slate-900">
             <div className="container px-4 mx-auto">
@@ -41,7 +46,7 @@ export default function PricingPage() {
                         </div>
                         <h3 className="text-xl font-medium mb-2">Pro Institute</h3>
                         <div className="mb-6">
-                            <span className="text-4xl font-bold">$29</span>
+                            <span className="text-4xl font-bold">$49</span>
                             <span className="text-muted-foreground">/month</span>
                         </div>
                         <p className="text-sm text-muted-foreground mb-8">For serious institutes scaling up operations.</p>
@@ -53,9 +58,13 @@ export default function PricingPage() {
                             <li className="flex items-center gap-3 text-sm"><Check className="h-4 w-4 text-primary" /> File Uploads (Assignments)</li>
                         </ul>
 
-                        <Button className="w-full" asChild>
-                            <Link href="/signup?plan=pro">Upgrade to Pro</Link>
-                        </Button>
+                        {user ? (
+                            <ProUpgradeButton userId={user.id} />
+                        ) : (
+                            <Button className="w-full" asChild>
+                                <Link href="/login?redirect=/pricing">Login to Upgrade</Link>
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>
